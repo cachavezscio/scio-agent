@@ -6,12 +6,27 @@ export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      {messages.map((m) => (
-        <div key={m.id} className="whitespace-pre-wrap">
-          {m.role === "user" ? "User: " : "AI: "}
-          {m.content}
-        </div>
-      ))}
+      <section className="grid gap-2">
+        {messages.map(
+          (m) => (
+            console.log(m),
+            (
+              <div
+                key={m.id}
+                className={
+                  "whitespace-pre-wrap rounded p-2 " +
+                  `${m.role === "user" ? "bg-gray-500" : "bg-gray-600"}`
+                }
+              >
+                <section>
+                  {m.role === "user" ? "🙋🏻‍♂️ User: " : "🤖 Scio Consulting: "}
+                </section>
+                <p>{m.content}</p>
+              </div>
+            )
+          )
+        )}
+      </section>
 
       <form onSubmit={handleSubmit}>
         <input
