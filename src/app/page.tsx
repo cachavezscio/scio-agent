@@ -3,8 +3,11 @@
 import Header from "@/components/header";
 import { useChat } from "ai/react";
 import Image from "next/image";
+import { remark } from "remark";
+import html from "remark-html";
 
 const scioAvatar = require("./../../public/scio-avatar.png");
+const userAvatar = require("./../../public/user-avatar.png");
 
 const InitialMessage = () => {
   return (
@@ -21,32 +24,60 @@ const InitialMessage = () => {
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
-  console.log(!messages.length);
+  function parseMarkdown(markdown: string) {
+    return remark().use(html).processSync(markdown).toString();
+  }
   return (
     <div className="bg-white">
       <Header />
       <section className="container min-h-[calc(100vh-72px)] mx-auto flex flex-col">
-        <section className="grid gap-2 flex-1">
+        <section className="flex flex-1 flex-col gap-4 p-4">
           {!messages.length && <InitialMessage />}
-          {messages.map(
-            (m) => (
-              console.log(m),
-              (
-                <div
-                  key={m.id}
-                  className={
-                    "whitespace-pre-wrap rounded p-2 " +
-                    `${m.role === "user" ? "bg-gray-500" : "bg-gray-600"}`
-                  }
-                >
-                  <section>
-                    {m.role === "user" ? "🙋🏻‍♂️ User: " : "🤖 Scio Consulting: "}
+          {messages.map((m) => (
+            <>
+              {m.role === "user" ? (
+                <section className="flex flex-col gap-2">
+                  {/* User */}
+                  <section className="flex gap-2 items-center justify-end">
+                    <p className="text-base text-[#000] font-semibold">You</p>
+                    <Image src={userAvatar} alt="User" width={32} height={32} />
                   </section>
-                  <p>{m.content}</p>
-                </div>
-              )
-            )
-          )}
+                  {/* Content */}
+                  <section className="p-4 bg-[#F2FAFF] border border-[#A9D6FF] rounded">
+                    <p
+                      className="text-base text-[#0971C6] font-medium text-right list-disc"
+                      dangerouslySetInnerHTML={{
+                        __html: parseMarkdown(m.content).toString(),
+                      }}
+                    ></p>
+                  </section>
+                </section>
+              ) : (
+                <section className="flex flex-col gap-2">
+                  <section className="flex gap-2 items-center">
+                    <Image
+                      src={scioAvatar}
+                      alt="Scio Consulting"
+                      width={32}
+                      height={32}
+                    />
+                    <p className="text-base text-[#000] font-semibold">
+                      Scio Consulting
+                    </p>
+                  </section>
+                  {/* Content */}
+                  <section className="p-4 bg-[#F9F9FB] border border-[#D8D9E0] rounded">
+                    <p
+                      className="text-base text-[#62636C] font-medium"
+                      dangerouslySetInnerHTML={{
+                        __html: parseMarkdown(m.content).toString(),
+                      }}
+                    ></p>
+                  </section>
+                </section>
+              )}
+            </>
+          ))}
         </section>
 
         <form
