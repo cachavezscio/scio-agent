@@ -87,7 +87,7 @@ export default function Chat() {
           <input
             className="px-4 py-3 rounded-2xl border border-[#88C5FF] w-full focus-visible:outline-none focus:ring-2 focus:ring-[#00447C] text-[#000]"
             value={input}
-            placeholder="Say something..."
+            placeholder="Ask about Scio Consulting..."
             onChange={handleInputChange}
           />
           <button type="submit" className="bg-[#00447C] px-4 py-3 rounded-2xl">
