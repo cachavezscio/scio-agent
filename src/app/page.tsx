@@ -31,7 +31,7 @@ export default function Chat() {
     <div className="bg-white">
       <Header />
       <section className="container min-h-[calc(100vh-72px)] mx-auto flex flex-col">
-        <section className="flex flex-1 flex-col gap-4 p-4">
+        <section className="flex flex-1 flex-col gap-8 p-4">
           {!messages.length && <InitialMessage />}
           {messages.map((m) => (
             <>
@@ -82,7 +82,7 @@ export default function Chat() {
 
         <form
           onSubmit={handleSubmit}
-          className="p-4 bg-[#E5F4FF] border border-[#A9D6FF] flex space-between gap-2"
+          className="p-4 bg-[#E5F4FF] border border-[#A9D6FF] flex space-between gap-2 sticky bottom-0 left-0"
         >
           <input
             className="px-4 py-3 rounded-2xl border border-[#88C5FF] w-full focus-visible:outline-none focus:ring-2 focus:ring-[#00447C] text-[#000]"

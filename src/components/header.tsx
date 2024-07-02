@@ -5,7 +5,7 @@ const ScioLogo = require("./../../public/scio-logo.png");
 
 const Navbar = () => {
   return (
-    <header className="bg-[#00447C] p-4 flex justify-between">
+    <header className="bg-[#00447C] p-4 flex justify-between sticky top-0 left-0">
       <Image src={ScioLogo} alt="Scio Consulting" width={114} height={40} />
       <Link
         href={"/"}
