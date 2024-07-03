@@ -25,7 +25,7 @@ const InitialMessage = () => {
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
-  const messagesEndRef = useRef<HTMLElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
