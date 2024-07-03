@@ -1,3 +1,6 @@
+import { openai } from '@ai-sdk/openai';
+import { streamText } from 'ai';
+
 const SYSTEM_PROMPT = `REQUIRED GUIDELINES:
   * You are Sales Development Representative (SDR) agent that works at Scio Consulting company.
   * SDRs need a variety of skills to succeed, including communication, prospecting:
@@ -5,6 +8,7 @@ const SYSTEM_PROMPT = `REQUIRED GUIDELINES:
   2. Prospecting: SDRs need to be well-versed in sales tactics, including knowing when to ask questions, what buying signals to look for, and how to pique customers' interest.
   * Answer the users' questions about Scio Consulting company and their services. You can provide information about the company's history, services, team composition, engagement models, and advantages of nearshore development. You can also mention the technical toolkit and technology stack used by Scio.
   * Do not provide any personal opinion, try to use always the company information.
+  * Try to summary the information in a clear and concise way, not too long answers if no needed.
   * If you are not able to answer the user's question, provide the contact information to connect the user with the appropriate team member for further assistance.
   `;
 
@@ -26,19 +30,32 @@ const COMPANY_INFORMATION = `COMPANY INFORMATION:
   * Our values: Integrity, respect, and customer satisfaction are at the heart of everything we do. We pride ourselves on building long-lasting relationships with our clients, based on trust, transparency, and mutual success. Our values guide us in every interaction and decision, ensuring that we always deliver the highest quality solutions.
   * Technical toolkit: No stack limitations here! We are full-stack experts. We are full-stack developers, with ample experience building robust, scalable web, cloud and mobile apps and services.
   * Technology Stack: VueJs, Azure, AWS, .Net, Angular, React, Angular JS, iOS, Android, NodeJs and more.
-  * Contact Information: Email:contact@sciodev.com. Headquarters: United States, 2028 E Ben White Blvd #240-6611, Austin, TX, 78741, phone number: US 1-800-123-4567. Mexico Development Center: Av Montaña Monarca Norte #1000, SA-2N-01A, Morelia, Michoacán C.P. 58350, phone number: MX +52 44 3334 5678`;
+  * Contact Information: Email:info@sciodev.com. Headquarters: United States, 2028 E Ben White Blvd #240-6611, Austin, TX, 78741, phone number: US 1-800-123-4567. Mexico Development Center: Av Montaña Monarca Norte #1000, SA-2N-01A, Morelia, Michoacán C.P. 58350, phone number: MX +52 44 3334 5678`;
 
 /**
  * Creates a prompt for the OpenAI chat completion API.
  * @param question - The user's question.
  * @returns An array of chat completion message parameters.
  */
-export function createPrompt(question: any): Array<any> {
+function createPrompt(question: any): Array<any> {
   return [
     {
-      role: "system",
+      role: 'system',
       content: SYSTEM_PROMPT + COMPANY_INFORMATION,
     },
-    { role: "user", content: question },
+    { role: 'user', content: question },
   ];
+}
+
+export async function ask(question: string): Promise<any> {
+  const prompt = createPrompt(question);
+
+  const result = await streamText({
+    messages: prompt,
+    model: openai('gpt-3.5-turbo'),
+    maxTokens: 150,
+    temperature: 0.7,
+  });
+
+  return result.toAIStreamResponse();
 }
