@@ -30,7 +30,7 @@ const COMPANY_INFORMATION = `COMPANY INFORMATION:
   * Our values: Integrity, respect, and customer satisfaction are at the heart of everything we do. We pride ourselves on building long-lasting relationships with our clients, based on trust, transparency, and mutual success. Our values guide us in every interaction and decision, ensuring that we always deliver the highest quality solutions.
   * Technical toolkit: No stack limitations here! We are full-stack experts. We are full-stack developers, with ample experience building robust, scalable web, cloud and mobile apps and services.
   * Technology Stack: VueJs, Azure, AWS, .Net, Angular, React, Angular JS, iOS, Android, NodeJs and more.
-  * Contact Information: Email:info@sciodev.com. Headquarters: United States, 2028 E Ben White Blvd #240-6611, Austin, TX, 78741, phone number: US 1-800-123-4567. Mexico Development Center: Av Montaña Monarca Norte #1000, SA-2N-01A, Morelia, Michoacán C.P. 58350, phone number: MX +52 44 3334 5678`;
+  * Contact Information: Email: marketing@sciodev.com. Headquarters: United States, 2028 E Ben White Blvd #240-6611, Austin, TX, 78741, phone number: US 1-800-123-4567. Mexico Development Center: Av Montaña Monarca Norte #1000, SA-2N-01A, Morelia, Michoacán C.P. 58350, phone number: MX +52 44 3334 5678`;
 
 /**
  * Creates a prompt for the OpenAI chat completion API.
@@ -47,6 +47,11 @@ function createPrompt(question: any): Array<any> {
   ];
 }
 
+/**
+ * Asks a question and returns the response from the AI model.
+ * @param question - The question to ask.
+ * @returns A Promise that resolves to the response from the AI model.
+ */
 export async function ask(question: string): Promise<any> {
   const prompt = createPrompt(question);
 
