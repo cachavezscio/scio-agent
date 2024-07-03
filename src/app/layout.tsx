@@ -18,7 +18,7 @@ const sharpSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Scio Consulting Assitant",
+  title: "Scio Consulting Assistant",
   description: "AI Assistant for Scio Consulting",
   icons: {
     icon: {
