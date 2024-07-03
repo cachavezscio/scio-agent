@@ -3,6 +3,7 @@
 import Header from "@/components/header";
 import { useChat } from "ai/react";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { remark } from "remark";
 import html from "remark-html";
 
@@ -24,19 +25,29 @@ const InitialMessage = () => {
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const messagesEndRef = useRef<HTMLElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   function parseMarkdown(markdown: string) {
     return remark().use(html).processSync(markdown).toString();
   }
   return (
-    <div className="bg-white">
+    <>
       <Header />
       <section className="container min-h-[calc(100vh-72px)] mx-auto flex flex-col">
         <section className="flex flex-1 flex-col gap-8 p-4">
           {!messages.length && <InitialMessage />}
-          {messages.map((m) => (
+          {messages.map((m, i) => (
             <>
               {m.role === "user" ? (
-                <section className="flex flex-col gap-2">
+                <section key={i} className="flex flex-col gap-2">
                   {/* User */}
                   <section className="flex gap-2 items-center justify-end">
                     <p className="text-base text-[#000] font-semibold">You</p>
@@ -53,7 +64,7 @@ export default function Chat() {
                   </section>
                 </section>
               ) : (
-                <section className="flex flex-col gap-2">
+                <section key={i} className="flex flex-col gap-2">
                   <section className="flex gap-2 items-center">
                     <Image
                       src={scioAvatar}
@@ -76,6 +87,7 @@ export default function Chat() {
                   </section>
                 </section>
               )}
+              <div ref={messagesEndRef} />
             </>
           ))}
         </section>
@@ -90,11 +102,14 @@ export default function Chat() {
             placeholder="Ask about Scio Consulting..."
             onChange={handleInputChange}
           />
-          <button type="submit" className="bg-[#00447C] px-4 py-3 rounded-2xl">
+          <button
+            type="submit"
+            className="bg-[#00447C] px-4 py-3 rounded-2xl text-white"
+          >
             Ask
           </button>
         </form>
       </section>
-    </div>
+    </>
   );
 }
